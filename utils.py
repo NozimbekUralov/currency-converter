@@ -1,6 +1,6 @@
 
-def filt(l: list[dict]) -> list:
-    return [obj["code"] for obj in l if obj["nbu_buy_price"]]
+def find_available(list_of_currencies: list[dict]) -> list:
+    return [obj["code"] for obj in list_of_currencies if obj["nbu_buy_price"]]
 
 def format_num(num: float) -> str:
     num = f"{num:.2f}"

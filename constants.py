@@ -1,4 +1,5 @@
 API_URL = "https://nbu.uz/uz/exchange-rates/json"
+DB_URL = "db.json"
 
 WELLCOME_MSG = "Currency Converter dasturiga xush kelibsiz! to'xtatish uchun '-1' kriting."
 
