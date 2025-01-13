@@ -1,3 +1,9 @@
+import json
+from datetime import date
+
+import constants
+
+import requests
 
 def find_available(list_of_currencies: list[dict]) -> list:
     return [obj["code"] for obj in list_of_currencies if obj["nbu_buy_price"]]
@@ -18,9 +24,9 @@ def format_num(num: float) -> str:
 
 def converter(
         from_code: str, 
-        to_code: str, 
         amount: float,
-        list_of_currencies: list[dict]
+        list_of_currencies: list[dict],
+        to_code: str = "UZS", 
     ) -> float | None:
     
     uzs = "UZS"
@@ -48,3 +54,33 @@ def converter(
         return  amount * price
     else:
         return  amount / price
+    
+
+def load_data():
+    try: 
+        with open(constants.DB_URL, "r") as db:
+            
+            db = json.load(fp=db)
+
+            current_date = date.today()
+            saved_date = db["date"]["date"]
+            
+            if saved_date != str(current_date):
+                return requests.get(constants.API_URL).json()
+            else: 
+                return db["response"]
+            
+    except FileNotFoundError:
+        with open(constants.DB_URL, "w") as db :
+            current_date = str(date.today())
+            response = requests.get(constants.API_URL).json()
+            db.write(
+                json.dumps(
+                    {
+                        "date": {"date": current_date}, 
+                        "response": response
+                    }, 
+                    indent=4
+                )
+            ) 
+            exit()

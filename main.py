@@ -8,33 +8,7 @@ import formats, constants, utils
 
 def main() -> None:
 
-    try: 
-        with open(constants.DB_URL, "r") as db:
-            
-            db = json.load(fp=db)
-
-            current_date = date.today()
-            saved_date = db["date"]["date"]
-            
-            if saved_date != str(current_date):
-                response = requests.get(constants.API_URL).json()
-            else: 
-                response = db["response"]
-            
-    except FileNotFoundError:
-        with open(constants.DB_URL, "w") as db :
-            current_date = str(date.today())
-            response = requests.get(constants.API_URL).json()
-            db.write(
-                json.dumps(
-                    {
-                        "date": {"date": current_date}, 
-                        "response": response
-                    }, 
-                    indent=4
-                )
-            ) 
-            exit()
+    response = utils.load_data()
     
     os.system("clear")
 
